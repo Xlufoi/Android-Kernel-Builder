@@ -50,7 +50,7 @@ jobs:
 
           mkdir -p $OUT_DIR
 
-          make O=$OUT_DIR ${DEVICE}_defconfig
+          make O=$OUT_DIR gki_defconfig
 
           make -j$(nproc --all) O=$OUT_DIR
 
