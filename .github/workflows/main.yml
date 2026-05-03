@@ -8,15 +8,15 @@ permissions:
 
 jobs:
   build-kernel:
-    name: StockKernetTest
+    name: StockKernel
     runs-on: ubuntu-22.04
     steps:
-      - name: Build
+      - name: StockKernel
         uses: dabao1955/kernel_build_action@main
         with:
           kernel-url: https://github.com/MiCode/Xiaomi_Kernel_OpenSource.git
           kernel-branch: onyx-v-oss
-          config: onyx_consolidate.config
+          config: onyx_perf.config
           arch: arm64
           aosp-gcc: true
           aosp-clang: true
