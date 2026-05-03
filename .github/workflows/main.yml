@@ -11,7 +11,7 @@ jobs:
     name: Build Kernel
     runs-on: ubuntu-22.04
     steps:
-      - name: Build
+      - name: NotCapybaraKernel
         uses: dabao1955/kernel_build_action@main
         with:
           kernel-url: https://github.com/71chjzkc/gki-clo.git
