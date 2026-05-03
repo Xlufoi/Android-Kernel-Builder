@@ -38,7 +38,6 @@ jobs:
       - name: Disable BBG
         run: |
           cd kernel
-          grep -R "CONFIG_BBG" -n .
           sed -i 's/CONFIG_BBG=y/# CONFIG_BBG is not set/g' $(find arch -name "*defconfig")
           
       - name: 🔧 Build kernel
