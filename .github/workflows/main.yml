@@ -14,8 +14,8 @@ jobs:
       - name: Build
         uses: dabao1955/kernel_build_action@main
         with:
-          kernel-url: https://github.com/MiCode/Xiaomi_Kernel_OpenSource/tree/onyx-v-oss
-          kernel-branch: onyx
+          kernel-url: https://github.com/MiCode/Xiaomi_Kernel_OpenSource.git
+          kernel-branch: onyx-v-oss
           config: cas_defconfig
           arch: arm64
           aosp-gcc: true
