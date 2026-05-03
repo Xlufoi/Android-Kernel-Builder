@@ -16,12 +16,12 @@ jobs:
         with:
           kernel-url: https://github.com/MiCode/Xiaomi_Kernel_OpenSource.git
           kernel-branch: onyx-v-oss
-          config: onyx_perf.config
+          config: onyx_defconfig
           arch: arm64
           aosp-gcc: true
           aosp-clang: true
           android-version: 15
-          aosp-clang-version: r383902
+          aosp-clang-version: r510928
           anykernel3: true
           release: true
           access-token: ${{ secrets.GITHUB_TOKEN }}
