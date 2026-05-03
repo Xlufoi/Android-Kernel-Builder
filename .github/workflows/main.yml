@@ -35,7 +35,12 @@ jobs:
         run: |
           echo "KBUILD_BUILD_USER=builder" >> $GITHUB_ENV
           echo "KBUILD_BUILD_HOST=github" >> $GITHUB_ENV
-
+      - name: Disable BBG
+        run: |
+          cd kernel
+          grep -R "CONFIG_BBG" -n .
+          sed -i 's/CONFIG_BBG=y/# CONFIG_BBG is not set/g' $(find arch -name "*defconfig")
+          
       - name: 🔧 Build kernel
         run: |
           cd kernel
