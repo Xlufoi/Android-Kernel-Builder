@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
 
 env:
-  KERNEL_REPO: https://github.com/71chjzkc/gki-clo.git
-  KERNEL_BRANCH: 6.6.56
+  KERNEL_REPO: https://github.com/Xlufoi/Lufoil-Kernel.git
+  KERNEL_BRANCH: 6.6.77
   DEVICE: onyx
   OUT_DIR: out
 
