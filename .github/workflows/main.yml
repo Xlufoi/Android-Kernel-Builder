@@ -1,27 +1,83 @@
-name: CI
+name: Build Kernel (6.x)
 
 on:
   workflow_dispatch:
 
-permissions:
-  contents: write
+env:
+  KERNEL_REPO: https://github.com/MiCode/Xiaomi_Kernel_OpenSource.git
+  KERNEL_BRANCH: onyx-v-oss
+  DEVICE: onyx
+  OUT_DIR: out
 
 jobs:
-  build-kernel:
-    name: StockKernel
-    runs-on: ubuntu-22.04
+  build:
+    runs-on: ubuntu-latest
+
     steps:
-      - name: StockKernel
-        uses: dabao1955/kernel_build_action@main
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🧰 Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y bc bison build-essential curl flex git libssl-dev wget zip \
+          gcc-aarch64-linux-gnu gcc-arm-linux-gnueabi python3
+
+      - name: 🌐 Clone kernel source
+        run: |
+          git clone --depth=1 --branch $KERNEL_BRANCH $KERNEL_REPO kernel
+
+      - name: 🧠 Clone clang (LLVM 18)
+        run: |
+          git clone --depth=1 https://github.com/ZyCromerZ/Clang.git clang
+
+      - name: ⚙️ Setup environment
+        run: |
+          echo "KBUILD_BUILD_USER=builder" >> $GITHUB_ENV
+          echo "KBUILD_BUILD_HOST=github" >> $GITHUB_ENV
+
+      - name: 🔧 Build kernel
+        run: |
+          cd kernel
+
+          export PATH=$(pwd)/../clang/bin:$PATH
+          export ARCH=arm64
+          export SUBARCH=arm64
+
+          export CC=clang
+          export CROSS_COMPILE=aarch64-linux-gnu-
+          export CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+
+          mkdir -p $OUT_DIR
+
+          make O=$OUT_DIR ${DEVICE}_defconfig
+
+          make -j$(nproc --all) O=$OUT_DIR
+
+      - name: 📦 Upload Image
+        uses: actions/upload-artifact@v4
         with:
-          kernel-url: https://github.com/MiCode/Xiaomi_Kernel_OpenSource.git
-          kernel-branch: onyx-v-oss
-          config: onyx_defconfig
-          arch: arm64
-          aosp-gcc: true
-          aosp-clang: true
-          android-version: 14
-          aosp-clang-version: r510928
-          anykernel3: true
-          release: true
-          access-token: ${{ secrets.GITHUB_TOKEN }}
+          name: Image
+          path: kernel/out/arch/arm64/boot/Image
+          if-no-files-found: ignore
+
+      - name: 📦 Upload Image.gz
+        uses: actions/upload-artifact@v4
+        with:
+          name: Image.gz
+          path: kernel/out/arch/arm64/boot/Image.gz
+          if-no-files-found: ignore
+
+      - name: 📦 Upload dtb
+        uses: actions/upload-artifact@v4
+        with:
+          name: dtb
+          path: kernel/out/arch/arm64/boot/dtb
+          if-no-files-found: ignore
+
+      - name: 📦 Upload dtbo.img
+        uses: actions/upload-artifact@v4
+        with:
+          name: dtbo
+          path: kernel/out/arch/arm64/boot/dtbo.img
+          if-no-files-found: ignore
