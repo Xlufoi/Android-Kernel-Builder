@@ -39,7 +39,7 @@ jobs:
       - name: 🔧 Build kernel
         run: |
           cd kernel
-
+          sed -i 's/# CONFIG_BBG is not set/'
           export PATH=$(pwd)/../clang/bin:$PATH
           export ARCH=arm64
           export SUBARCH=arm64
