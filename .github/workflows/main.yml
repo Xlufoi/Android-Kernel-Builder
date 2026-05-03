@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  KERNEL_REPO: https://github.com/MiCode/Xiaomi_Kernel_OpenSource.git
+  KERNEL_REPO: https://github.com/Xlufoi/Xiaomi_Kernel_OpenSource.git
   KERNEL_BRANCH: onyx-v-oss
   DEVICE: onyx
   OUT_DIR: out
